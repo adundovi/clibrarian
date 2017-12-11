@@ -4,6 +4,8 @@ Title: ${book.title}
 %endif
 Authors:
 	${"\n\t".join(book.authors)}
+Publisher: ${book.publisher}
+Date of publishing: ${book.publishedDate}
 ISBN: ${book.isbn}
-GoogleID: ${book.googleId}
+Google ID: ${book.googleId}
 GoogleLink: ${book.googleLink}

@@ -42,7 +42,7 @@ class Show(Command):
 
         if self.args.type == 'isbn':
             query = 'isbn:'+query
-            books = g.search(query)
+            books = self.api.search(query)
             query = books[0].googleId
 
         book = self.api.get_volumes(query)
