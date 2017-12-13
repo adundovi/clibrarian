@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(name="clibrarian",
-      version="0.1",
+      version="0.11",
       description="""A command-line tool which provides interfaces to
       online library services with the emphasis on phyiscs."""
       author="Andrej Dundovic",

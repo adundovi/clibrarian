@@ -1,16 +1,16 @@
 import re
 
 from clibrarian.libs.abstract import Tool, Command
-from api import GoogleBooksApi 
+from api import InspireHEPApi 
 
-class Book(Tool):
+class Inspire(Tool):
 
     def __init__(self):
         Tool.__init__(self)
 
-        self.api = GoogleBooksApi()
-        self.name = 'book'
-        self.help = 'Google Books interface'
+        self.api = InspireHEPApi()
+        self.name = 'inspire'
+        self.help = 'INSPIREHEP interface'
         self.commands = {
                 'show': Show(),
                 'search': Search()
@@ -22,7 +22,7 @@ class Show(Command):
         Command.__init__(self)
 
         self.name = 'show'
-        self.help = 'show book'
+        self.help = 'show record'
     
     def init_parser(self, command_parsers):
         Command.init_parser(self, command_parsers)
@@ -30,9 +30,6 @@ class Show(Command):
         self.command_parser.add_argument('query',
                                  nargs='?',
                                  help='Query')
-        self.command_parser.add_argument('-t', '--type',
-                                 default='googleId',
-                                 help='Options: googleId, ISBN')
         self.command_parser.add_argument('-f', '--format',
                                  default='cli',
                                  help='format of the output')
@@ -40,14 +37,9 @@ class Show(Command):
     def process(self):
         query = self.args.query
 
-        if self.args.type == 'isbn':
-            query = 'isbn:'+query
-            books = self.api.search(query)
-            query = books[0].id
+        result = self.api.get_record(query)
 
-        book = self.api.get_volumes(query)
-
-        book.output(format=self.args.format)
+        result.output(format=self.args.format)
 
 class Search(Command):
     
@@ -72,9 +64,7 @@ class Search(Command):
 
         query = re.sub(r"\s+", '+', query)
 
-        if self.args.type == 'isbn':
-            query = 'isbn:'+query
-        books = self.api.search(query, True)
+        results = self.api.search(query)
 
-        for book in books:
-            book.output()
+        for r in results:
+            print(r)
