@@ -72,9 +72,18 @@ class GoogleBook(Item):
             self.ratingsCount = json['volumeInfo']['ratingsCount']
 
 class ArXivPaper(Item):
+    updated = ''
+    summary = ''
+    authors = ''
+    doi = None
+    pdf = None #always present
+    link = None
+    source = None  #equal to pdf if None
+    category = None
+    comment = None
+    primary_category = None
 
-    def __init__(self, entry):
-        Item.__init__(self)
+    def from_xml(self, entry):
 
         self.id = entry.id.text
         self.updated = entry.updated.text
@@ -82,10 +91,6 @@ class ArXivPaper(Item):
         self.title = entry.title.text.replace('\n', ' ').replace('\r', '')
         self.summary = entry.summary.text.replace('\n', ' ').replace('\r', '')
         self.authors = [author.name.text for author in entry.author]
-        self.doi = None
-        self.pdf = None #always present
-        self.link = None
-        self.source = None #equal to pdf if None
         for link in entry.link:
             if 'title' in link.attrib:
                 if link.get('title') == 'doi':

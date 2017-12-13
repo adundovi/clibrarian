@@ -29,8 +29,10 @@ class ArxivApi(AbstractApi):
         root = self.get_xml(url)
 
         papers = []
-        for e in root.entry:
-            papers.append(ArXivPaper(e))
+        for item in root.entry:
+            paper = ArXivPaper()
+            paper.from_xml(item)
+            papers.append(paper)
 
         return papers
 
